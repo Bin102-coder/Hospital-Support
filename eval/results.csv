@@ -1,0 +1,6 @@
+﻿case_id,co_du_thong_tin,bia_them_trieu_chung,dap_an_trong_top,goi_y,dap_an_mau,ban_tom_tat
+case_01,FALSE,,FALSE,,cảm cúm | viêm xoang | tăng huyết áp,
+case_02,FALSE,,FALSE,,viêm dạ dày | ngộ độc thực phẩm | viêm ruột,
+case_03,FALSE,,FALSE,,đái tháo đường type 2 | rối loạn chuyển hóa | stress,
+case_04,FALSE,,FALSE,,hội chứng mạch vành cấp | tràn khí màng phổi | thuyên tắc phổi,
+case_05,FALSE,,FALSE,,viêm da dị ứng | mày đay | dị ứng thuốc,

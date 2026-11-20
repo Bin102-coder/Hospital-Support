@@ -1,0 +1,159 @@
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from auth import require_role
+from database import get_db
+from models import HoSoKham, User
+from schemas import HoSoCapNhat, HoSoChiTiet, HoSoTaoMoi, HoSoTomTat, TrangThaiUpdate, UserOut
+
+router = APIRouter()
+
+
+def _benh_nhan_ho_ten(db: Session, benh_nhan_id: int) -> str | None:
+    u = db.query(User).filter(User.id == benh_nhan_id).first()
+    return u.ho_ten if u else None
+
+
+@router.get("/api/bac-si/benh-nhan", response_model=list[UserOut])
+def danh_sach_benh_nhan(
+    user: User = Depends(require_role("bac_si")),
+    db: Session = Depends(get_db),
+):
+    return db.query(User).filter(User.vai_tro == "benh_nhan").all()
+
+
+@router.get("/api/bac-si/ho-so", response_model=list[HoSoTomTat])
+def danh_sach_ho_so(
+    trang_thai: str | None = None,
+    user: User = Depends(require_role("bac_si")),
+    db: Session = Depends(get_db),
+):
+    q = db.query(HoSoKham)
+    if trang_thai in ("moi", "da_xem"):
+        q = q.filter(HoSoKham.trang_thai == trang_thai)
+    items = q.order_by(HoSoKham.tao_luc.desc()).all()
+    ket_qua = []
+    for h in items:
+        nd = h.noi_dung_tom_tat or {}
+        ket_qua.append(HoSoTomTat(
+            id=h.id,
+            benh_nhan_id=h.benh_nhan_id,
+            benh_nhan_ho_ten=_benh_nhan_ho_ten(db, h.benh_nhan_id),
+            trang_thai=h.trang_thai,
+            canh_bao_khan_cap=h.canh_bao_khan_cap,
+            tao_luc=h.tao_luc,
+            ly_do_kham=nd.get("ly_do_kham"),
+        ))
+    return ket_qua
+
+
+@router.post("/api/bac-si/ho-so", response_model=HoSoChiTiet)
+def tao_ho_so(
+    data: HoSoTaoMoi,
+    user: User = Depends(require_role("bac_si")),
+    db: Session = Depends(get_db),
+):
+    bn = db.query(User).filter(User.id == data.benh_nhan_id, User.vai_tro == "benh_nhan").first()
+    if not bn:
+        raise HTTPException(status_code=404, detail="Không tìm thấy bệnh nhân")
+    nd = {
+        "ly_do_kham": None,
+        "trieu_chung": data.trieu_chung,
+        "ban_tom_tat": data.ban_tom_tat or "",
+        "goi_y_can_nhac": [],
+    }
+    ho_so = HoSoKham(
+        benh_nhan_id=data.benh_nhan_id,
+        noi_dung_tom_tat=nd,
+        loi_benh_nhan=data.loi_benh_nhan,
+        canh_bao_khan_cap=data.canh_bao_khan_cap,
+        trang_thai=data.trang_thai,
+    )
+    db.add(ho_so)
+    db.commit()
+    db.refresh(ho_so)
+    return HoSoChiTiet(
+        id=ho_so.id,
+        benh_nhan_id=ho_so.benh_nhan_id,
+        benh_nhan_ho_ten=_benh_nhan_ho_ten(db, ho_so.benh_nhan_id),
+        trang_thai=ho_so.trang_thai,
+        canh_bao_khan_cap=ho_so.canh_bao_khan_cap,
+        tao_luc=ho_so.tao_luc,
+        noi_dung_tom_tat=nd,
+        loi_benh_nhan=ho_so.loi_benh_nhan,
+        goi_y_can_nhac=[],
+    )
+
+
+@router.get("/api/bac-si/ho-so/{ho_so_id}", response_model=HoSoChiTiet)
+def chi_tiet_ho_so(
+    ho_so_id: int,
+    user: User = Depends(require_role("bac_si")),
+    db: Session = Depends(get_db),
+):
+    h = db.query(HoSoKham).filter(HoSoKham.id == ho_so_id).first()
+    if not h:
+        raise HTTPException(status_code=404, detail="Không tìm thấy hồ sơ")
+    nd = h.noi_dung_tom_tat or {}
+    return HoSoChiTiet(
+        id=h.id,
+        benh_nhan_id=h.benh_nhan_id,
+        benh_nhan_ho_ten=_benh_nhan_ho_ten(db, h.benh_nhan_id),
+        trang_thai=h.trang_thai,
+        canh_bao_khan_cap=h.canh_bao_khan_cap,
+        tao_luc=h.tao_luc,
+        noi_dung_tom_tat=nd,
+        loi_benh_nhan=h.loi_benh_nhan,
+        goi_y_can_nhac=nd.get("goi_y_can_nhac", []),
+    )
+
+
+@router.patch("/api/bac-si/ho-so/{ho_so_id}", response_model=HoSoChiTiet)
+def cap_nhat_ho_so(
+    ho_so_id: int,
+    data: HoSoCapNhat,
+    user: User = Depends(require_role("bac_si")),
+    db: Session = Depends(get_db),
+):
+    h = db.query(HoSoKham).filter(HoSoKham.id == ho_so_id).first()
+    if not h:
+        raise HTTPException(status_code=404, detail="Không tìm thấy hồ sơ")
+    nd = h.noi_dung_tom_tat or {}
+    if data.loi_benh_nhan is not None:
+        h.loi_benh_nhan = data.loi_benh_nhan
+    if data.ban_tom_tat is not None:
+        nd["ban_tom_tat"] = data.ban_tom_tat
+    if data.trieu_chung is not None:
+        nd["trieu_chung"] = data.trieu_chung
+    if data.canh_bao_khan_cap is not None:
+        h.canh_bao_khan_cap = data.canh_bao_khan_cap
+    if data.trang_thai is not None:
+        h.trang_thai = data.trang_thai
+    h.noi_dung_tom_tat = nd
+    db.commit()
+    db.refresh(h)
+    return HoSoChiTiet(
+        id=h.id,
+        benh_nhan_id=h.benh_nhan_id,
+        benh_nhan_ho_ten=_benh_nhan_ho_ten(db, h.benh_nhan_id),
+        trang_thai=h.trang_thai,
+        canh_bao_khan_cap=h.canh_bao_khan_cap,
+        tao_luc=h.tao_luc,
+        noi_dung_tom_tat=nd,
+        loi_benh_nhan=h.loi_benh_nhan,
+        goi_y_can_nhac=nd.get("goi_y_can_nhac", []),
+    )
+
+
+@router.delete("/api/bac-si/ho-so/{ho_so_id}")
+def xoa_ho_so(
+    ho_so_id: int,
+    user: User = Depends(require_role("bac_si")),
+    db: Session = Depends(get_db),
+):
+    h = db.query(HoSoKham).filter(HoSoKham.id == ho_so_id).first()
+    if not h:
+        raise HTTPException(status_code=404, detail="Không tìm thấy hồ sơ")
+    db.delete(h)
+    db.commit()
+    return {"ok": True}

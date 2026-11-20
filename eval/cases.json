@@ -1,0 +1,62 @@
+[
+  {
+    "id": "case_01",
+    "ly_do_kham": "đau đầu",
+    "trieu_chung": ["đau đầu", "sốt nhẹ", "ho khan"],
+    "thoi_gian": "3 ngày",
+    "muc_do": "vừa",
+    "tien_su": "tăng huyết áp",
+    "thuoc_dang_dung": "amlodipine",
+    "di_ung": "không",
+    "loi_benh_nhan": "Bệnh nhân nam 45 tuổi, đau đầu 3 ngày, sốt nhẹ, ho khan. Tiền sử tăng huyết áp, đang uống amlodipine. Không dị ứng.",
+    "dap_an_mau": ["cảm cúm", "viêm xoang", "tăng huyết áp"]
+  },
+  {
+    "id": "case_02",
+    "ly_do_kham": "đau bụng",
+    "trieu_chung": ["đau bụng", "buồn nôn", "tiêu chảy"],
+    "thoi_gian": "2 ngày",
+    "muc_do": "nhẹ",
+    "tien_su": "viêm dạ dày",
+    "thuoc_dang_dung": "omeprazole",
+    "di_ung": "penicillin",
+    "loi_benh_nhan": "Bệnh nhân nữ 30 tuổi, đau bụng 2 ngày kèm buồn nôn và tiêu chảy. Tiền sử viêm dạ dày, đang uống omeprazole. Dị ứng penicillin.",
+    "dap_an_mau": ["viêm dạ dày", "ngộ độc thực phẩm", "viêm ruột"]
+  },
+  {
+    "id": "case_03",
+    "ly_do_kham": "mệt mỏi",
+    "trieu_chung": ["mệt mỏi", "khát nước", "đi tiểu nhiều"],
+    "thoi_gian": "2 tuần",
+    "muc_do": "vừa",
+    "tien_su": "gia đình có tiểu đường",
+    "thuoc_dang_dung": "không",
+    "di_ung": "không",
+    "loi_benh_nhan": "Bệnh nhân nam 50 tuổi, mệt mỏi 2 tuần, khát nước và đi tiểu nhiều. Gia đình có tiểu đường type 2. Chưa dùng thuốc.",
+    "dap_an_mau": ["đái tháo đường type 2", "rối loạn chuyển hóa", "stress"]
+  },
+  {
+    "id": "case_04",
+    "ly_do_kham": "đau ngực",
+    "trieu_chung": ["đau ngực", "khó thở"],
+    "thoi_gian": "1 giờ",
+    "muc_do": "nặng",
+    "tien_su": "hút thuốc",
+    "thuoc_dang_dung": "không",
+    "di_ung": "không",
+    "loi_benh_nhan": "Bệnh nhân nam 60 tuổi, đau ngực và khó thở từ 1 giờ nay. Hút thuốc lá 20 năm. Cần đánh giá khẩn cấp.",
+    "dap_an_mau": ["hội chứng mạch vành cấp", "tràn khí màng phổi", "thuyên tắc phổi"]
+  },
+  {
+    "id": "case_05",
+    "ly_do_kham": "phát ban",
+    "trieu_chung": ["phát ban", "ngứa"],
+    "thoi_gian": "5 ngày",
+    "muc_do": "nhẹ",
+    "tien_su": "dị ứng thời tiết",
+    "thuoc_dang_dung": "cetirizine",
+    "di_ung": "tôm",
+    "loi_benh_nhan": "Bệnh nhân nữ 25 tuổi, phát ban và ngứa 5 ngày. Tiền sử dị ứng thời tiết, đang uống cetirizine. Dị ứng tôm.",
+    "dap_an_mau": ["viêm da dị ứng", "mày đay", "dị ứng thuốc"]
+  }
+]
