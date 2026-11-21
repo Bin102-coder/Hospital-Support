@@ -28,6 +28,7 @@ SYSTEM_PROMPT = (
     "- Không chẩn đoán chắc chắn, không kê thuốc, không hướng dẫn điều trị.\n"
     "- Nếu thông tin không đủ, phải nói rõ 'không đủ thông tin', không suy đoán.\n"
     "- Mỗi gợi ý phải dựa trực tiếp trên triệu chứng/lời khai; không thêm bệnh không liên quan.\n"
+    "- Không dùng cụm 'cần được loại trừ các tình trạng đe dọa tính mạng ngay lập tức'.\n"
     "- Nếu có dấu hiệu nguy hiểm (đau ngực, khó thở, ngất, co giật, liệt, méo miệng, ...), "
     "không được xem nhẹ; gợi ý phải nhấn mạnh cần cấp cứu/khám ngay.\n"
     "- Không được nhầm bệnh nguy hiểm thành bệnh thông thường; luôn nêu độ không chắc chắn.\n"

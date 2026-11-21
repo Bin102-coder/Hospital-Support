@@ -22,6 +22,8 @@ def _loc_goi_y_an_toan(goi_y, data):
             tu_khoa.add(w)
     ket_qua = []
     for g in goi_y:
+        g["ly_do"] = (g.get("ly_do") or "").replace("cần được loại trừ các tình trạng đe dọa tính mạng ngay lập tức", "").strip()
+        g["ten"] = (g.get("ten") or "").replace("cần được loại trừ các tình trạng đe dọa tính mạng ngay lập tức", "").strip()
         ly_do = (g.get("ly_do") or "").lower()
         if ("lời khai" in ly_do or "triệu chứng" in ly_do or any(tk in ly_do for tk in tu_khoa)):
             ket_qua.append(g)
@@ -46,11 +48,11 @@ def tom_tat(
 
     ket_qua_ai = goi_y_tu_ai(data)
     if ket_qua_ai is not None:
-        ban_tom_tat = ket_qua_ai.ban_tom_tat
+        ban_tom_tat = (ket_qua_ai.ban_tom_tat or "").replace("cần được loại trừ các tình trạng đe dọa tính mạng ngay lập tức", "").strip()
         goi_y = _loc_goi_y_an_toan([g.model_dump() for g in ket_qua_ai.goi_y_can_nhac], data)
-        loi_khuyen = ket_qua_ai.loi_khuyen_benh_nhan
-        muc_do_danh_gia = ket_qua_ai.muc_do_danh_gia
-        ly_do_muc_do = ket_qua_ai.ly_do_muc_do
+        loi_khuyen = (ket_qua_ai.loi_khuyen_benh_nhan or "").replace("cần được loại trừ các tình trạng đe dọa tính mạng ngay lập tức", "").strip()
+        muc_do_danh_gia = (ket_qua_ai.muc_do_danh_gia or "").replace("cần được loại trừ các tình trạng đe dọa tính mạng ngay lập tức", "").strip()
+        ly_do_muc_do = (ket_qua_ai.ly_do_muc_do or "").replace("cần được loại trừ các tình trạng đe dọa tính mạng ngay lập tức", "").strip()
     else:
         ban_tom_tat = (
             f"Lý do khám: {data.ly_do_kham}. "
