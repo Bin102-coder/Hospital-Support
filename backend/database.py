@@ -1,11 +1,20 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-DATABASE_URL = "sqlite:///./app.db"
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
+
+# Dam bao thu muc chua file SQLite ton tai (vd: /data tren Render)
+if DATABASE_URL.startswith("sqlite:///"):
+    db_path = DATABASE_URL[len("sqlite:///"):]
+    parent = os.path.dirname(db_path)
+    if parent and not os.path.exists(parent):
+        os.makedirs(parent, exist_ok=True)
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread": False},
+    connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {},
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
