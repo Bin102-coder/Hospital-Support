@@ -11,6 +11,7 @@ def seed_du_lieu():
     try:
         if not db.query(User).filter(User.email == BAC_SI_EMAIL).first():
             db.add(User(
+                id=0,
                 email=BAC_SI_EMAIL,
                 mat_khau_da_bam=bam_mat_khau(BAC_SI_MAT_KHAU),
                 ho_ten="Bác sĩ Demo",
