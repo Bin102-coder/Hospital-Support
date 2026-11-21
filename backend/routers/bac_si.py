@@ -43,6 +43,7 @@ def danh_sach_ho_so(
             canh_bao_khan_cap=h.canh_bao_khan_cap,
             tao_luc=h.tao_luc,
             ly_do_kham=nd.get("ly_do_kham"),
+            muc_do_danh_gia=nd.get("muc_do_danh_gia"),
         ))
     return ket_qua
 

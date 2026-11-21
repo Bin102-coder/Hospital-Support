@@ -90,6 +90,7 @@ class HoSoTomTat(BaseModel):
     canh_bao_khan_cap: bool
     tao_luc: datetime
     ly_do_kham: Optional[str] = None
+    muc_do_danh_gia: Optional[str] = None
 
     class Config:
         from_attributes = True

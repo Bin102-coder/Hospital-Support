@@ -119,6 +119,7 @@ export default function BacSiDanhSach() {
                   <th>ID</th>
                   <th>Bệnh nhân</th>
                   <th>Lý do khám</th>
+                  <th>Mức độ AI</th>
                   <th>Trạng thái</th>
                   <th>Cảnh báo</th>
                   <th>Thời gian</th>
@@ -130,6 +131,7 @@ export default function BacSiDanhSach() {
                     <td><Link to={`/bac-si/${h.id}`}>{h.id}</Link></td>
                     <td>{h.benh_nhan_ho_ten}</td>
                     <td>{h.ly_do_kham}</td>
+                    <td>{h.muc_do_danh_gia || "—"}</td>
                     <td>
                       <span className={h.trang_thai === "moi" ? "badge badge-moi" : "badge badge-da"}>
                         {h.trang_thai}
