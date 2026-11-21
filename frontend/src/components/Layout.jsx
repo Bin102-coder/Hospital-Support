@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { clearToken, currentUser } from "../api";
+import ChatWidget from "./ChatWidget";
 
 export default function Layout({ children, title }) {
   const user = currentUser();
@@ -48,6 +49,7 @@ export default function Layout({ children, title }) {
         </div>
         <div className="content-area fade-in">{children}</div>
       </main>
+      {user?.vai_tro === "benh_nhan" && <ChatWidget />}
     </div>
   );
 }

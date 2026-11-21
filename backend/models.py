@@ -30,3 +30,16 @@ class HoSoKham(Base):
     tao_luc = Column(DateTime, default=datetime.utcnow)
 
     benh_nhan = relationship("User", back_populates="ho_so_kham")
+
+
+class LichKham(Base):
+    __tablename__ = "lich_kham"
+
+    id = Column(Integer, primary_key=True, index=True)
+    benh_nhan_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    thoi_gian = Column(String(255), nullable=False)
+    ly_do = Column(Text, nullable=True)
+    trang_thai = Column(String(20), default="cho_xac_nhan")
+    tao_luc = Column(DateTime, default=datetime.utcnow)
+
+    benh_nhan = relationship("User")

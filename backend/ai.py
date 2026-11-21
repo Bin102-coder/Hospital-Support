@@ -14,7 +14,7 @@ if os.path.exists(env_path):
 from google import genai
 from google.genai import types
 
-from schemas import KetQuaAI, YeuCau
+from schemas import ChatResponse, KetQuaAI, YeuCau
 
 MODEL = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
 API_KEY = os.getenv("GEMINI_API_KEY")
@@ -79,3 +79,45 @@ def goi_y_tu_ai(du_lieu: YeuCau) -> Optional[KetQuaAI]:
                 print("AI error", model_name, "lan", lan + 1, ":", e)
                 time.sleep(1)
     return None
+
+
+CHAT_SYSTEM_PROMPT = (
+    "Ban la tro ly ao ho tro benh nhan cua he thong kham benh. "
+    "Nhiem vu: tra loi cau hoi, goi y tinh nang, va ho tro dat lich kham. "
+    "Quy tac:\n"
+    "- Tra loi ngan gon, than thien, tieng Viet.\n"
+    "- Khong chuan doan benh, khong ke thuoc.\n"
+    "- Neu benh nhan muon dat lich, hoi ro ngay/gio va ly do, sau do dat action='schedule'.\n"
+    "- Neu chua ro thong tin, hoi lai de lam ro.\n"
+    "- Co the goi y tinh nang moi (vd: xem lich su kham, nhan thong bao).\n"
+    "- Luon nhac gap bac si neu trieu chung nguy hiem.\n"
+    "Tra ve JSON theo schema."
+)
+
+
+def chat_tro_ly(message: str, history: list[dict]) -> ChatResponse:
+    if not API_KEY:
+        return ChatResponse(reply="Xin loi, he thong AI chua san sang.")
+    client = genai.Client(api_key=API_KEY)
+    contents = []
+    for h in history:
+        role = "user" if h.get("role") == "user" else "model"
+        contents.append({"role": role, "parts": [{"text": h.get("content", "")}]})
+    contents.append({"role": "user", "parts": [{"text": message}]})
+    try:
+        response = client.models.generate_content(
+            model=MODEL,
+            contents=contents,
+            config=types.GenerateContentConfig(
+                system_instruction=CHAT_SYSTEM_PROMPT,
+                response_mime_type="application/json",
+                response_schema=ChatResponse,
+                temperature=0.4,
+            ),
+        )
+        if response.parsed is None:
+            return ChatResponse(reply="Xin loi, toi chua hieu. Ban noi ro hon duoc khong?")
+        return response.parsed
+    except Exception as e:
+        print("Chat AI error:", e)
+        return ChatResponse(reply="Xin loi, he thong dang ban. Thu lai sau.")

@@ -113,6 +113,19 @@ class TrangThaiUpdate(BaseModel):
     trang_thai: Literal["moi", "da_xem"]
 
 
+class ChatRequest(BaseModel):
+    message: str
+    history: list[dict] = []
+
+
+class ChatResponse(BaseModel):
+    reply: str
+    action: Literal["none", "schedule"] = "none"
+    schedule_thoi_gian: Optional[str] = None
+    schedule_ly_do: Optional[str] = None
+    appointment_id: Optional[int] = None
+
+
 class HoSoTaoMoi(BaseModel):
     benh_nhan_ten: str
     loi_benh_nhan: str
