@@ -33,6 +33,10 @@ export default function BacSiDanhSach() {
 
   useEffect(() => { tai(); }, [loc]);
   useEffect(() => { taiBenhNhan(); }, []);
+  useEffect(() => {
+    const timer = setInterval(() => { tai(); }, 5000);
+    return () => clearInterval(timer);
+  }, [loc]);
 
   async function taoHoSo(e) {
     e.preventDefault();
