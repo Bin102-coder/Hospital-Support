@@ -37,6 +37,14 @@ def tom_tat(
         goi_y = []
         loi_khuyen = "Nghỉ ngơi, uống đủ nước, theo dõi triệu chứng. Nếu triệu chứng kéo dài hoặc nặng hơn, hãy đến gặp bác sĩ."
 
+    # Nếu có dấu hiệu nguy hiểm: không để gợi ý bệnh thông thường lấn át cảnh báo
+    if canh_bao:
+        goi_y = [{
+            "ten": "Cần đánh giá khẩn cấp",
+            "ly_do": "Lời khai có dấu hiệu nguy hiểm (theo luật từ khóa).",
+            "can_hoi_them": "Cần khám/cấp cứu ngay, không tự điều trị.",
+        }]
+
     noi_dung = {
         "ly_do_kham": data.ly_do_kham,
         "trieu_chung": data.trieu_chung,

@@ -42,10 +42,11 @@ class BanTomTat(BaseModel):
 
 TU_KHOA_KHAN_CAP = [
     "đau ngực", "khó thở", "ngất", "co giật", "liệt",
-    "méo miệng", "ho ra máu", "nôn ra máu",
-    "đi ngoài ra máu", "chảy máu không cầm",
+    "méo miệng", "nói khó", "ho ra máu", "nôn ra máu",
+    "đi ngoài ra máu", "chảy máu không cầm", "muốn chết", "tự tử",
+    "tím tái", "không thở được", "mất ý thức", "liệt nửa người",
+    "đau đầu dữ dội", "nôn liên tục", "sốt cao", "đau bụng dữ dội",
 ]
-
 
 class DangKy(BaseModel):
     email: str
