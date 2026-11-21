@@ -19,7 +19,6 @@ export default function BacSiChiTiet() {
     setHoSo(data);
     const nd = data.noi_dung_tom_tat || {};
     setForm({
-      loi_benh_nhan: data.loi_benh_nhan || "",
       ban_tom_tat: nd.ban_tom_tat || "",
       trieu_chung: (nd.trieu_chung || []).join(", "),
       canh_bao_khan_cap: data.canh_bao_khan_cap,
@@ -40,7 +39,6 @@ export default function BacSiChiTiet() {
   async function luuSua(e) {
     e.preventDefault();
     const payload = {
-      loi_benh_nhan: form.loi_benh_nhan,
       ban_tom_tat: form.ban_tom_tat,
       trieu_chung: form.trieu_chung.split(",").map((s) => s.trim()).filter(Boolean),
       canh_bao_khan_cap: form.canh_bao_khan_cap,
@@ -121,11 +119,6 @@ export default function BacSiChiTiet() {
           </>
         ) : (
           <form onSubmit={luuSua}>
-            <div style={{ marginBottom: 8 }}>
-              <label className="muted">Lời khai bệnh nhân</label>
-              <textarea className="input" rows={4} value={form.loi_benh_nhan}
-                onChange={(e) => setForm({ ...form, loi_benh_nhan: e.target.value })} />
-            </div>
             <div style={{ marginBottom: 8 }}>
               <label className="muted">Tóm tắt</label>
               <textarea className="input" rows={3} value={form.ban_tom_tat}

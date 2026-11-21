@@ -120,8 +120,6 @@ def cap_nhat_ho_so(
     if not h:
         raise HTTPException(status_code=404, detail="Không tìm thấy hồ sơ")
     nd = h.noi_dung_tom_tat or {}
-    if data.loi_benh_nhan is not None:
-        h.loi_benh_nhan = data.loi_benh_nhan
     if data.ban_tom_tat is not None:
         nd["ban_tom_tat"] = data.ban_tom_tat
     if data.trieu_chung is not None:

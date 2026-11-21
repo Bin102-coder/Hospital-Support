@@ -116,7 +116,8 @@ export default function BacSiDanhSach() {
             <table className="table">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>ID hồ sơ</th>
+                  <th>ID bệnh nhân</th>
                   <th>Bệnh nhân</th>
                   <th>Lý do khám</th>
                   <th>Mức độ AI</th>
@@ -129,6 +130,7 @@ export default function BacSiDanhSach() {
                 {danhSach.map((h) => (
                   <tr key={h.id}>
                     <td><Link to={`/bac-si/${h.id}`}>{h.id}</Link></td>
+                    <td>{h.benh_nhan_id}</td>
                     <td>{h.benh_nhan_ho_ten}</td>
                     <td>{h.ly_do_kham}</td>
                     <td>{h.muc_do_danh_gia || "—"}</td>

@@ -123,7 +123,6 @@ class HoSoTaoMoi(BaseModel):
 
 
 class HoSoCapNhat(BaseModel):
-    loi_benh_nhan: Optional[str] = None
     ban_tom_tat: Optional[str] = None
     trieu_chung: Optional[list[str]] = None
     canh_bao_khan_cap: Optional[bool] = None
