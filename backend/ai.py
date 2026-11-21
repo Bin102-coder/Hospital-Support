@@ -82,22 +82,22 @@ def goi_y_tu_ai(du_lieu: YeuCau) -> Optional[KetQuaAI]:
 
 
 CHAT_SYSTEM_PROMPT = (
-    "Ban la tro ly ao ho tro benh nhan cua he thong kham benh. "
-    "Nhiem vu: tra loi cau hoi, goi y tinh nang, va ho tro dat lich kham. "
-    "Quy tac:\n"
-    "- Tra loi ngan gon, than thien, tieng Viet.\n"
-    "- Khong chuan doan benh, khong ke thuoc.\n"
-    "- Neu benh nhan muon dat lich, hoi ro ngay/gio va ly do, sau do dat action='schedule'.\n"
-    "- Neu chua ro thong tin, hoi lai de lam ro.\n"
-    "- Co the goi y tinh nang moi (vd: xem lich su kham, nhan thong bao).\n"
-    "- Luon nhac gap bac si neu trieu chung nguy hiem.\n"
-    "Tra ve JSON theo schema."
+    "Bạn là trợ lý ảo hỗ trợ bệnh nhân của hệ thống khám bệnh. "
+    "Nhiệm vụ: trả lời câu hỏi, gợi ý tính năng, và hỗ trợ đặt lịch khám. "
+    "Quy tắc:\n"
+    "- Trả lời ngắn gọn, thân thiện, tiếng Việt có dấu.\n"
+    "- Không chẩn đoán bệnh, không kê thuốc.\n"
+    "- Nếu bệnh nhân muốn đặt lịch, hỏi rõ ngày/giờ và lý do, sau đó đặt action='schedule'.\n"
+    "- Nếu chưa rõ thông tin, hỏi lại để làm rõ.\n"
+    "- Có thể gợi ý tính năng mới (vd: xem lịch sử khám, nhận thông báo).\n"
+    "- Luôn nhắc gặp bác sĩ nếu triệu chứng nguy hiểm.\n"
+    "Trả về JSON theo schema."
 )
 
 
 def chat_tro_ly(message: str, history: list[dict]) -> ChatResponse:
     if not API_KEY:
-        return ChatResponse(reply="Xin loi, he thong AI chua san sang.")
+        return ChatResponse(reply="Xin lỗi, hệ thống AI chưa sẵn sàng.")
     client = genai.Client(api_key=API_KEY)
     contents = []
     for h in history:
@@ -116,8 +116,8 @@ def chat_tro_ly(message: str, history: list[dict]) -> ChatResponse:
             ),
         )
         if response.parsed is None:
-            return ChatResponse(reply="Xin loi, toi chua hieu. Ban noi ro hon duoc khong?")
+            return ChatResponse(reply="Xin lỗi, tôi chưa hiểu. Bạn nói rõ hơn được không?")
         return response.parsed
     except Exception as e:
         print("Chat AI error:", e)
-        return ChatResponse(reply="Xin loi, he thong dang ban. Thu lai sau.")
+        return ChatResponse(reply="Xin lỗi, hệ thống đang bận. Thử lại sau.")

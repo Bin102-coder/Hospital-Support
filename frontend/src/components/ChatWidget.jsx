@@ -4,7 +4,7 @@ import { api } from "../api";
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Xin chao! Toi la tro ly ao. Toi co the giup ban dat lich kham hoac tra loi thac mac." },
+    { role: "assistant", content: "Xin chào! Tôi là trợ lý ảo. Tôi có thể giúp bạn đặt lịch khám hoặc trả lời thắc mắc." },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ export default function ChatWidget() {
       }
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch (err) {
-      setMessages((prev) => [...prev, { role: "assistant", content: "Xin loi, co loi xay ra." }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: "Xin lỗi, có lỗi xảy ra." }]);
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ export default function ChatWidget() {
         <div className="chat-panel">
           <div className="chat-header">
             <b>Tro ly ao</b>
-            <button className="link" onClick={() => setOpen(false)}>Dong</button>
+            <button className="link" onClick={() => setOpen(false)}>Đóng</button>
           </div>
           <div className="chat-body">
             {messages.map((m, i) => (
@@ -55,12 +55,12 @@ export default function ChatWidget() {
                 {m.content}
               </div>
             ))}
-            {loading && <div className="chat-msg bot">Dang tra loi...</div>}
+            {loading && <div className="chat-msg bot">Đang trả lời...</div>}
             <div ref={bottomRef} />
           </div>
           <form className="chat-input-row" onSubmit={send}>
             <input className="input" value={input} onChange={(e) => setInput(e.target.value)}
-              placeholder="Nhap tin nhan..." />
+              placeholder="Nhập tin nhắn..." />
             <button type="submit" className="btn btn-primary" disabled={loading}>Gui</button>
           </form>
         </div>

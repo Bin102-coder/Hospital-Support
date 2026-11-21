@@ -29,5 +29,5 @@ def chat(
         db.refresh(lich)
         result.appointment_id = lich.id
         if not result.reply:
-            result.reply = "Da dat lich kham cho ban."
+            result.reply = "Đã đặt lịch khám cho bạn."
     return result
