@@ -144,9 +144,6 @@ export default function Login() {
             </button>
           </p>
           {loi && <div className="alert alert-danger">{loi}</div>}
-          <p className="muted center" style={{ marginTop: 8, fontSize: 12 }}>
-            Seed bác sĩ: bacsi@example.com / bacsi123
-          </p>
         </div>
       </div>
       <div className="login-right">
