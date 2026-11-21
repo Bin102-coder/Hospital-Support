@@ -64,7 +64,17 @@ body {
 .content-area { max-width: 1040px; width: 100%; }
 @media (max-width: 768px) {
   .app-shell { flex-direction: column; }
-  .sidebar { width: 100%; height: auto; position: static; }
+  .sidebar { width: 100%; height: auto; position: static; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px; }
+  .sidebar-brand { flex: 1 1 100%; }
+  .sidebar-nav { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+  .side-link { padding: 6px 10px; font-size: 14px; }
+  .sidebar-footer { margin-top: 0; border-top: 1px solid var(--border); width: 100%; padding-top: 8px; }
+  .main-content { padding: 16px; }
+  .login-shell { flex-direction: column; }
+  .login-left { max-width: 100%; padding: 20px 16px; }
+  .login-right { padding: 16px; }
+  .scene-wrap { max-width: 100%; }
+  .info-grid { grid-template-columns: 1fr; }
 }
 .card {
   background: var(--card);
@@ -104,7 +114,7 @@ p { margin: 0 0 8px; line-height: 1.5; }
 .input {
   width: 100%; padding: 10px 12px; border-radius: 8px;
   border: 1px solid var(--border); background: var(--bg-2); color: var(--text);
-  font-size: 15px; outline: none;
+  font-size: 16px; outline: none;
 }
 .input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(13,148,136,0.2); }
 
