@@ -86,7 +86,8 @@ export default function BacSiChiTiet() {
             <div className="info-grid" style={{ marginTop: 10 }}>
               <div className="info-item"><b>Lý do khám:</b> {nd.ly_do_kham || "—"}</div>
               <div className="info-item"><b>Thời gian:</b> {nd.thoi_gian || "—"}</div>
-              <div className="info-item"><b>Mức độ:</b> {nd.muc_do || "—"}</div>
+              <div className="info-item"><b>Mức độ (bệnh nhân khai):</b> {nd.muc_do || "—"}</div>
+              <div className="info-item"><b>Mức độ (AI đánh giá):</b> {nd.muc_do_danh_gia || "—"} {nd.ly_do_muc_do ? `(${nd.ly_do_muc_do})` : ""}</div>
               <div className="info-item"><b>Tiền sử:</b> {nd.tien_su || "—"}</div>
               <div className="info-item"><b>Thuốc đang dùng:</b> {nd.thuoc_dang_dung || "—"}</div>
               <div className="info-item"><b>Dị ứng:</b> {nd.di_ung || "—"}</div>

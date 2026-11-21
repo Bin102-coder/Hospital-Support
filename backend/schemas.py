@@ -25,6 +25,8 @@ class KetQuaAI(BaseModel):
     ban_tom_tat: str
     goi_y_can_nhac: list[GoiYCanNhac] = []
     loi_khuyen_benh_nhan: str = ""
+    muc_do_danh_gia: str = ""
+    ly_do_muc_do: str = ""
 
 
 class BanTomTat(BaseModel):

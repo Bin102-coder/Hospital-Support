@@ -26,6 +26,8 @@ SYSTEM_PROMPT = (
     "Quy tắc bắt buộc:\n"
     "- Chỉ dùng thông tin bệnh nhân cung cấp; không bịa triệu chứng/bệnh.\n"
     "- Không chẩn đoán chắc chắn, không kê thuốc, không hướng dẫn điều trị.\n"
+    "- Nếu thông tin không đủ, phải nói rõ 'không đủ thông tin', không suy đoán.\n"
+    "- Mỗi gợi ý phải dựa trực tiếp trên triệu chứng/lời khai; không thêm bệnh không liên quan.\n"
     "- Nếu có dấu hiệu nguy hiểm (đau ngực, khó thở, ngất, co giật, liệt, méo miệng, ...), "
     "không được xem nhẹ; gợi ý phải nhấn mạnh cần cấp cứu/khám ngay.\n"
     "- Không được nhầm bệnh nguy hiểm thành bệnh thông thường; luôn nêu độ không chắc chắn.\n"
@@ -34,6 +36,8 @@ SYSTEM_PROMPT = (
     "- ban_tom_tat: tóm tắt ngắn gọn, trung lập.\n"
     "- loi_khuyen_benh_nhan: lời khuyên chung cho bệnh nhân (nghỉ ngơi, uống nước, theo dõi triệu chứng), "
     "không chẩn đoán, không kê thuốc; luôn khuyên gặp bác sĩ nếu triệu chứng kéo dài/nặng hơn.\n"
+    "- muc_do_danh_gia: đánh giá mức độ tình trạng theo triệu chứng: 'thấp', 'trung bình', 'cao' hoặc 'nguy hiểm'.\n"
+    "- ly_do_muc_do: lý do ngắn gọn cho mức độ trên (dựa trên triệu chứng), không chẩn đoán bệnh.\n"
     "Trả về JSON theo schema."
 )
 
@@ -64,6 +68,7 @@ def goi_y_tu_ai(du_lieu: YeuCau) -> Optional[KetQuaAI]:
                         system_instruction=SYSTEM_PROMPT,
                         response_mime_type="application/json",
                         response_schema=KetQuaAI,
+                        temperature=0.2,
                     ),
                 )
                 if response.parsed is None:

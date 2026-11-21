@@ -10,6 +10,26 @@ from schemas import KetQuaGui, TU_KHOA_KHAN_CAP, YeuCau
 router = APIRouter()
 
 
+def _loc_goi_y_an_toan(goi_y, data):
+    # Bước kiểm tra an toàn: chỉ giữ gợi ý có lý do dựa trên lời khai/triệu chứng đã khai
+    tu_khoa = set()
+    for t in data.trieu_chung:
+        for w in t.lower().split():
+            if len(w) >= 3:
+                tu_khoa.add(w)
+    for w in data.loi_benh_nhan.lower().split():
+        if len(w) >= 4:
+            tu_khoa.add(w)
+    ket_qua = []
+    for g in goi_y:
+        ly_do = (g.get("ly_do") or "").lower()
+        if ("lời khai" in ly_do or "triệu chứng" in ly_do or any(tk in ly_do for tk in tu_khoa)):
+            ket_qua.append(g)
+    if not ket_qua:
+        return goi_y
+    return ket_qua
+
+
 @router.get("/api/hello")
 def hello():
     return {"message": "Xin chào từ backend!"}
@@ -27,8 +47,10 @@ def tom_tat(
     ket_qua_ai = goi_y_tu_ai(data)
     if ket_qua_ai is not None:
         ban_tom_tat = ket_qua_ai.ban_tom_tat
-        goi_y = [g.model_dump() for g in ket_qua_ai.goi_y_can_nhac]
+        goi_y = _loc_goi_y_an_toan([g.model_dump() for g in ket_qua_ai.goi_y_can_nhac], data)
         loi_khuyen = ket_qua_ai.loi_khuyen_benh_nhan
+        muc_do_danh_gia = ket_qua_ai.muc_do_danh_gia
+        ly_do_muc_do = ket_qua_ai.ly_do_muc_do
     else:
         ban_tom_tat = (
             f"Lý do khám: {data.ly_do_kham}. "
@@ -36,6 +58,12 @@ def tom_tat(
         )
         goi_y = []
         loi_khuyen = "Nghỉ ngơi, uống đủ nước, theo dõi triệu chứng. Nếu triệu chứng kéo dài hoặc nặng hơn, hãy đến gặp bác sĩ."
+        muc_do_danh_gia = data.muc_do or "chưa đánh giá"
+        ly_do_muc_do = ""
+
+    # Nếu AI đánh giá nguy hiểm, nâng cảnh báo
+    if "nguy hiểm" in (muc_do_danh_gia or "").lower():
+        canh_bao = True
 
     # Nếu có dấu hiệu nguy hiểm: không để gợi ý bệnh thông thường lấn át cảnh báo
     if canh_bao:
@@ -56,6 +84,8 @@ def tom_tat(
         "ban_tom_tat": ban_tom_tat,
         "goi_y_can_nhac": goi_y,
         "loi_khuyen": loi_khuyen,
+        "muc_do_danh_gia": muc_do_danh_gia,
+        "ly_do_muc_do": ly_do_muc_do,
     }
 
     ho_so = HoSoKham(
