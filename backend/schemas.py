@@ -54,6 +54,7 @@ class DangKy(BaseModel):
     email: str
     mat_khau: str
     ho_ten: str
+    ma_bac_si: Optional[str] = None
 
 
 class DangNhap(BaseModel):

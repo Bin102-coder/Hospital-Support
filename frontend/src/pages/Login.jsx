@@ -64,6 +64,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [matKhau, setMatKhau] = useState("");
   const [hoTen, setHoTen] = useState("");
+  const [maBacSi, setMaBacSi] = useState("");
   const [loi, setLoi] = useState("");
   const [sceneIndex, setSceneIndex] = useState(0);
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ export default function Login() {
       if (mode === "register") {
         const r = await api("/api/dang-ky", {
           method: "POST",
-          body: JSON.stringify({ email, mat_khau: matKhau, ho_ten: hoTen }),
+          body: JSON.stringify({ email, mat_khau: matKhau, ho_ten: hoTen, ma_bac_si: maBacSi }),
         });
         if (!r.ok) throw new Error(await r.text());
       }
@@ -120,10 +121,16 @@ export default function Login() {
           </p>
           <form onSubmit={submit}>
             {mode === "register" && (
-              <div style={{ marginBottom: 10 }}>
-                <input className="input" placeholder="Họ tên" value={hoTen}
-                  onChange={(e) => setHoTen(e.target.value)} required />
-              </div>
+              <>
+                <div style={{ marginBottom: 10 }}>
+                  <input className="input" placeholder="Họ tên" value={hoTen}
+                    onChange={(e) => setHoTen(e.target.value)} required />
+                </div>
+                <div style={{ marginBottom: 10 }}>
+                  <input className="input" placeholder="Mã bác sĩ (nếu có)" value={maBacSi}
+                    onChange={(e) => setMaBacSi(e.target.value)} />
+                </div>
+              </>
             )}
             <div style={{ marginBottom: 10 }}>
               <input className="input" type="email" placeholder="Email" value={email}

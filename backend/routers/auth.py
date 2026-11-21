@@ -1,3 +1,5 @@
+import os
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -17,7 +19,7 @@ def dang_ky(data: DangKy, db: Session = Depends(get_db)):
         email=data.email,
         mat_khau_da_bam=bam_mat_khau(data.mat_khau),
         ho_ten=data.ho_ten,
-        vai_tro="benh_nhan",
+        vai_tro="bac_si" if data.ma_bac_si == os.getenv("DOCTOR_CODE", "doctor123") else "benh_nhan",
     )
     db.add(user)
     db.commit()
