@@ -2,16 +2,22 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from auth import require_role
+from ai import goi_y_tu_ai
 from database import get_db
 from models import HoSoKham, User
-from schemas import HoSoCapNhat, HoSoChiTiet, HoSoTaoMoi, HoSoTomTat, TrangThaiUpdate, UserOut
+from schemas import HoSoCapNhat, HoSoChiTiet, HoSoTaoMoi, HoSoTomTat, TrangThaiUpdate, UserOut, YeuCau, TU_KHOA_KHAN_CAP
 
 router = APIRouter()
 
 
-def _benh_nhan_ho_ten(db: Session, benh_nhan_id: int) -> str | None:
-    u = db.query(User).filter(User.id == benh_nhan_id).first()
-    return u.ho_ten if u else None
+def _benh_nhan_ho_ten(db: Session, ho_so: HoSoKham) -> str | None:
+    nd = ho_so.noi_dung_tom_tat or {}
+    if nd.get("benh_nhan_ten"):
+        return nd.get("benh_nhan_ten")
+    if ho_so.benh_nhan_id is not None:
+        u = db.query(User).filter(User.id == ho_so.benh_nhan_id).first()
+        return u.ho_ten if u else None
+    return None
 
 
 @router.get("/api/bac-si/benh-nhan", response_model=list[UserOut])
@@ -38,7 +44,7 @@ def danh_sach_ho_so(
         ket_qua.append(HoSoTomTat(
             id=h.id,
             benh_nhan_id=h.benh_nhan_id,
-            benh_nhan_ho_ten=_benh_nhan_ho_ten(db, h.benh_nhan_id),
+            benh_nhan_ho_ten=_benh_nhan_ho_ten(db, h),
             trang_thai=h.trang_thai,
             canh_bao_khan_cap=h.canh_bao_khan_cap,
             tao_luc=h.tao_luc,
@@ -54,20 +60,41 @@ def tao_ho_so(
     user: User = Depends(require_role("bac_si")),
     db: Session = Depends(get_db),
 ):
-    bn = db.query(User).filter(User.id == data.benh_nhan_id, User.vai_tro == "benh_nhan").first()
-    if not bn:
-        raise HTTPException(status_code=404, detail="Không tìm thấy bệnh nhân")
+    van_ban = (data.loi_benh_nhan + " " + " ".join(data.trieu_chung)).lower()
+    canh_bao = data.canh_bao_khan_cap or any(tk in van_ban for tk in TU_KHOA_KHAN_CAP)
+
+    yeu_cau = YeuCau(
+        ly_do_kham=data.benh_nhan_ten,
+        trieu_chung=data.trieu_chung,
+        loi_benh_nhan=data.loi_benh_nhan,
+    )
+    ket_qua_ai = goi_y_tu_ai(yeu_cau)
+    if ket_qua_ai is not None:
+        ban_tom_tat = ket_qua_ai.ban_tom_tat
+        goi_y = [g.model_dump() for g in ket_qua_ai.goi_y_can_nhac]
+        loi_khuyen = ket_qua_ai.loi_khuyen_benh_nhan
+        muc_do_danh_gia = ket_qua_ai.muc_do_danh_gia
+    else:
+        ban_tom_tat = data.ban_tom_tat or f"Lý do khám: {data.benh_nhan_ten}. Triệu chứng: {', '.join(data.trieu_chung) if data.trieu_chung else 'không nêu rõ'}."
+        goi_y = []
+        loi_khuyen = "Nghỉ ngơi, uống đủ nước, theo dõi triệu chứng. Nếu triệu chứng kéo dài hoặc nặng hơn, hãy đến gặp bác sĩ."
+        muc_do_danh_gia = "chưa đánh giá"
+
     nd = {
-        "ly_do_kham": None,
+        "benh_nhan_ten": data.benh_nhan_ten,
+        "ly_do_kham": data.benh_nhan_ten,
         "trieu_chung": data.trieu_chung,
-        "ban_tom_tat": data.ban_tom_tat or "",
-        "goi_y_can_nhac": [],
+        "ban_tom_tat": ban_tom_tat,
+        "goi_y_can_nhac": goi_y,
+        "loi_khuyen": loi_khuyen,
+        "muc_do_danh_gia": muc_do_danh_gia,
     }
+
     ho_so = HoSoKham(
-        benh_nhan_id=data.benh_nhan_id,
+        benh_nhan_id=None,
         noi_dung_tom_tat=nd,
         loi_benh_nhan=data.loi_benh_nhan,
-        canh_bao_khan_cap=data.canh_bao_khan_cap,
+        canh_bao_khan_cap=canh_bao,
         trang_thai=data.trang_thai,
     )
     db.add(ho_so)
@@ -75,14 +102,14 @@ def tao_ho_so(
     db.refresh(ho_so)
     return HoSoChiTiet(
         id=ho_so.id,
-        benh_nhan_id=ho_so.benh_nhan_id,
-        benh_nhan_ho_ten=_benh_nhan_ho_ten(db, ho_so.benh_nhan_id),
+        benh_nhan_id=None,
+        benh_nhan_ho_ten=data.benh_nhan_ten,
         trang_thai=ho_so.trang_thai,
         canh_bao_khan_cap=ho_so.canh_bao_khan_cap,
         tao_luc=ho_so.tao_luc,
         noi_dung_tom_tat=nd,
         loi_benh_nhan=ho_so.loi_benh_nhan,
-        goi_y_can_nhac=[],
+        goi_y_can_nhac=goi_y,
     )
 
 
@@ -99,7 +126,7 @@ def chi_tiet_ho_so(
     return HoSoChiTiet(
         id=h.id,
         benh_nhan_id=h.benh_nhan_id,
-        benh_nhan_ho_ten=_benh_nhan_ho_ten(db, h.benh_nhan_id),
+        benh_nhan_ho_ten=_benh_nhan_ho_ten(db, h),
         trang_thai=h.trang_thai,
         canh_bao_khan_cap=h.canh_bao_khan_cap,
         tao_luc=h.tao_luc,
@@ -134,7 +161,7 @@ def cap_nhat_ho_so(
     return HoSoChiTiet(
         id=h.id,
         benh_nhan_id=h.benh_nhan_id,
-        benh_nhan_ho_ten=_benh_nhan_ho_ten(db, h.benh_nhan_id),
+        benh_nhan_ho_ten=_benh_nhan_ho_ten(db, h),
         trang_thai=h.trang_thai,
         canh_bao_khan_cap=h.canh_bao_khan_cap,
         tao_luc=h.tao_luc,

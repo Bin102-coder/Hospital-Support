@@ -98,7 +98,7 @@ class HoSoTomTat(BaseModel):
 
 class HoSoChiTiet(BaseModel):
     id: int
-    benh_nhan_id: int
+    benh_nhan_id: Optional[int] = None
     benh_nhan_ho_ten: Optional[str] = None
     trang_thai: str
     canh_bao_khan_cap: bool
@@ -114,7 +114,7 @@ class TrangThaiUpdate(BaseModel):
 
 
 class HoSoTaoMoi(BaseModel):
-    benh_nhan_id: int
+    benh_nhan_ten: str
     loi_benh_nhan: str
     ban_tom_tat: Optional[str] = None
     trieu_chung: list[str] = []

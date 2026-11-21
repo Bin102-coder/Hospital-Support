@@ -22,7 +22,7 @@ class HoSoKham(Base):
     __tablename__ = "ho_so_kham"
 
     id = Column(Integer, primary_key=True, index=True)
-    benh_nhan_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    benh_nhan_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     noi_dung_tom_tat = Column(JSON, nullable=True)
     loi_benh_nhan = Column(Text, nullable=False)
     canh_bao_khan_cap = Column(Boolean, default=False)

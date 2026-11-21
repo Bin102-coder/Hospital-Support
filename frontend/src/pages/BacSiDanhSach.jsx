@@ -4,13 +4,13 @@ import { api } from "../api";
 import Layout from "../components/Layout";
 
 export default function BacSiDanhSach() {
+  const navigate = useNavigate();
   const [danhSach, setDanhSach] = useState([]);
-  const [patients, setPatients] = useState([]);
   const [loc, setLoc] = useState("all");
   const [loi, setLoi] = useState("");
   const [hienForm, setHienForm] = useState(false);
   const [form, setForm] = useState({
-    benh_nhan_id: "",
+    benh_nhan_ten: "",
     loi_benh_nhan: "",
     ban_tom_tat: "",
     trieu_chung: "",
@@ -26,13 +26,7 @@ export default function BacSiDanhSach() {
     setDanhSach(await res.json());
   }
 
-  async function taiBenhNhan() {
-    const res = await api("/api/bac-si/benh-nhan");
-    if (res.ok) setPatients(await res.json());
-  }
-
   useEffect(() => { tai(); }, [loc]);
-  useEffect(() => { taiBenhNhan(); }, []);
   useEffect(() => {
     const timer = setInterval(() => { tai(); }, 5000);
     return () => clearInterval(timer);
@@ -42,7 +36,7 @@ export default function BacSiDanhSach() {
     e.preventDefault();
     setLoi("");
     const payload = {
-      benh_nhan_id: Number(form.benh_nhan_id),
+      benh_nhan_ten: form.benh_nhan_ten,
       loi_benh_nhan: form.loi_benh_nhan,
       ban_tom_tat: form.ban_tom_tat,
       trieu_chung: form.trieu_chung.split(",").map((s) => s.trim()).filter(Boolean),
@@ -52,7 +46,7 @@ export default function BacSiDanhSach() {
     const res = await api("/api/bac-si/ho-so", { method: "POST", body: JSON.stringify(payload) });
     if (!res.ok) { setLoi("Lỗi " + res.status); return; }
     setHienForm(false);
-    setForm({ benh_nhan_id: "", loi_benh_nhan: "", ban_tom_tat: "", trieu_chung: "", canh_bao_khan_cap: false, trang_thai: "moi" });
+    setForm({ benh_nhan_ten: "", loi_benh_nhan: "", ban_tom_tat: "", trieu_chung: "", canh_bao_khan_cap: false, trang_thai: "moi" });
     tai();
   }
 
@@ -76,13 +70,9 @@ export default function BacSiDanhSach() {
         {hienForm && (
           <form onSubmit={taoHoSo} style={{ marginBottom: 16 }}>
             <div style={{ marginBottom: 8 }}>
-              <label className="muted">Bệnh nhân</label>
-              <select className="input" value={form.benh_nhan_id} onChange={(e) => setForm({ ...form, benh_nhan_id: e.target.value })} required>
-                <option value="">-- Chọn --</option>
-                {patients.map((p) => (
-                  <option key={p.id} value={p.id}>{p.ho_ten} ({p.email})</option>
-                ))}
-              </select>
+              <label className="muted">Tên bệnh nhân</label>
+              <input className="input" value={form.benh_nhan_ten}
+                onChange={(e) => setForm({ ...form, benh_nhan_ten: e.target.value })} required placeholder="Nhập tên bệnh nhân" />
             </div>
             <div style={{ marginBottom: 8 }}>
               <textarea className="input" placeholder="Lời khai bệnh nhân" value={form.loi_benh_nhan}
@@ -128,7 +118,7 @@ export default function BacSiDanhSach() {
               </thead>
               <tbody>
                 {danhSach.map((h) => (
-                  <tr key={h.id}>
+                  <tr key={h.id} onClick={() => navigate(`/bac-si/${h.id}`)} style={{ cursor: "pointer" }}>
                     <td><Link to={`/bac-si/${h.id}`}>{h.id}</Link></td>
                     <td>{h.benh_nhan_id}</td>
                     <td>{h.benh_nhan_ho_ten}</td>
