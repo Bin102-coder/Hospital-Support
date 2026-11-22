@@ -119,7 +119,7 @@ export default function BacSiDanhSach() {
               <tbody>
                 {danhSach.map((h) => (
                   <tr key={h.id} onClick={() => navigate(`/bac-si/${h.id}`)} style={{ cursor: "pointer" }}>
-                    <td><Link to={`/bac-si/${h.id}`}>{h.id}</Link></td>
+                    <td><Link to={`/bac-si/ho-so/${h.id}`}>{h.id}</Link></td>
                     <td>{h.benh_nhan_id}</td>
                     <td>{h.benh_nhan_ho_ten}</td>
                     <td>{h.ly_do_kham}</td>

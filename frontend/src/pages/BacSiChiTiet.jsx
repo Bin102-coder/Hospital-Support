@@ -63,7 +63,7 @@ export default function BacSiChiTiet() {
   return (
     <Layout title={`Hồ sơ bệnh nhân #${hoSo.id}`}>
       <div className="card">
-        <p><Link to="/bac-si">← Quay lại danh sách</Link></p>
+        <p><Link to="/bac-si/ho-so">← Quay lại danh sách</Link></p>
 
         <div className="row" style={{ marginBottom: 8 }}>
           <span className="muted">Bệnh nhân:</span>

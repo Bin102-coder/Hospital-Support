@@ -27,13 +27,15 @@ export default function Layout({ children, title }) {
         <nav className="sidebar-nav">
           {user?.vai_tro === "bac_si" && (
             <>
-              <Link to="/bac-si" className="side-link">Hồ sơ bệnh nhân</Link>
+              <Link to="/bac-si" className="side-link">Trang chủ</Link>
+              <Link to="/bac-si/ho-so" className="side-link">Hồ sơ bệnh nhân</Link>
               <Link to="/bac-si/lich-kham" className="side-link">Lịch khám</Link>
             </>
           )}
           {user?.vai_tro === "benh_nhan" && (
             <>
-              <Link to="/" className="side-link">Khai báo triệu chứng</Link>
+              <Link to="/" className="side-link">Trang chủ</Link>
+              <Link to="/khai-bao" className="side-link">Khai báo triệu chứng</Link>
               <Link to="/dat-lich" className="side-link">Đặt lịch khám</Link>
             </>
           )}
