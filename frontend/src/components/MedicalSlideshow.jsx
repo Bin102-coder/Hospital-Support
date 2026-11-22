@@ -9,7 +9,7 @@ export default function MedicalSlideshow() {
     return () => clearInterval(timer);
   }, []);
   return (
-    <div className="scene-wrap" style={{ position: "relative", height: 220 }}>
+    <div className="scene-wrap" style={{ position: "relative", width: "100%", height: 320 }}>
       {IMAGES.map((src, i) => (
         <img
           key={src}
