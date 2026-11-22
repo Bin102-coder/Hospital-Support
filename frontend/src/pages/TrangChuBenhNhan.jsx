@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
+import MedicalSlideshow from "../components/MedicalSlideshow";
 
 export default function TrangChuBenhNhan() {
   return (
@@ -7,6 +8,9 @@ export default function TrangChuBenhNhan() {
       <div className="hero card">
         <h1>Xin chào, bệnh nhân</h1>
         <p>Chăm sóc sức khỏe thông minh - thu thập và tổng hợp triệu chứng trước khám.</p>
+        <div style={{ marginTop: 12 }}>
+          <MedicalSlideshow />
+        </div>
       </div>
       <div className="grid-2" style={{ marginTop: 16 }}>
         <Link to="/khai-bao" className="card action-card">

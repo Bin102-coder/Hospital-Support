@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 import Layout from "../components/Layout";
+import MedicalSlideshow from "../components/MedicalSlideshow";
 
 export default function TrangChuBacSi() {
   const [soMoi, setSoMoi] = useState(0);
@@ -21,6 +22,9 @@ export default function TrangChuBacSi() {
       <div className="hero card">
         <h1>Xin chào, bác sĩ</h1>
         <p>Quản lý hồ sơ bệnh nhân và lịch khám trong một nơi.</p>
+        <div style={{ marginTop: 12 }}>
+          <MedicalSlideshow />
+        </div>
       </div>
       <div className="grid-2" style={{ marginTop: 16 }}>
         <div className="card stat-card">
