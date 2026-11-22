@@ -48,7 +48,7 @@ export default function Login() {
             <div className="brand-sub">Hệ thống hỗ trợ khám bệnh</div>
           </div>
         </div>
-        <div className="card" style={{ marginTop: 24 }}>
+        <div className="card login-form-wrap" style={{ marginTop: 0 }}>
           <h2 className="center">{mode === "login" ? "Đăng nhập" : "Đăng ký"}</h2>
           <p className="muted center" style={{ marginBottom: 16 }}>
             {mode === "login" ? "Chào mừng trở lại" : "Tạo tài khoản mới"}
@@ -88,8 +88,8 @@ export default function Login() {
         </div>
       </div>
       <div className="login-right">
-        <div style={{ width: "100%", maxWidth: 360 }}>
-          <MedicalSlideshow />
+        <div style={{ width: "100%", maxWidth: 630 }}>
+          <MedicalSlideshow ratio="4 / 3" maxWidth={630} />
         </div>
         <div className="login-right-text">
           <h2>Chăm sóc sức khỏe thông minh</h2>
