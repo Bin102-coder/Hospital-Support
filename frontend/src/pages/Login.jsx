@@ -40,14 +40,14 @@ export default function Login() {
 
   return (
     <div className="login-shell">
-      <div className="login-left" style={{ maxWidth: 560 }}>
-        <div className="brand-row">
-          <div className="brand-mark">H</div>
-          <div>
-            <div className="brand-name">Hospital</div>
-            <div className="brand-sub">Hệ thống hỗ trợ khám bệnh</div>
-          </div>
+      <div className="login-logo">
+        <div className="brand-mark">H</div>
+        <div>
+          <div className="brand-name">Hospital</div>
+          <div className="brand-sub">Hệ thống hỗ trợ khám bệnh</div>
         </div>
+      </div>
+      <div className="login-left" style={{ maxWidth: 560 }}>
         <div className="card login-form-wrap" style={{ marginTop: 0 }}>
           <h2 className="center">{mode === "login" ? "Đăng nhập" : "Đăng ký"}</h2>
           <p className="muted center" style={{ marginBottom: 16 }}>
