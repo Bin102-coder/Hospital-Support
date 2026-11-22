@@ -21,7 +21,7 @@ export default function TrangChuBacSi() {
     <Layout title="Trang chủ">
       <div className="hero card">
         <h1>Xin chào, bác sĩ</h1>
-        <p>Quản lý hồ sơ bệnh nhân và lịch khám trong một nơi.</p>
+        <p>Quản lý hồ sơ bệnh nhân và lịch khám trong ngày.</p>
         <div style={{ marginTop: 12 }}>
           <MedicalSlideshow />
         </div>
@@ -40,12 +40,12 @@ export default function TrangChuBacSi() {
         <Link to="/bac-si/ho-so" className="card action-card">
           <h3>Hồ sơ bệnh nhân</h3>
           <p className="muted">Xem, lọc, đánh dấu đã xem, thêm/sửa/xóa hồ sơ.</p>
-          <span className="btn btn-primary" style={{ marginTop: 8, display: "inline-block" }}>Mở danh sách</span>
+          <span className="btn btn-primary" style={{ display: "inline-block" }}>Mở danh sách</span>
         </Link>
         <Link to="/bac-si/lich-kham" className="card action-card">
           <h3>Lịch khám</h3>
           <p className="muted">Xác nhận hoặc hủy lịch bệnh nhân đặt.</p>
-          <span className="btn btn-ghost" style={{ marginTop: 8, display: "inline-block" }}>Xem lịch</span>
+          <span className="btn btn-ghost" style={{ display: "inline-block" }}>Xem lịch</span>
         </Link>
       </div>
     </Layout>
