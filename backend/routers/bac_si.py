@@ -190,14 +190,17 @@ def danh_sach_lich_kham(
     user: User = Depends(require_role("bac_si")),
     db: Session = Depends(get_db),
 ):
-    items = db.query(LichKham).order_by(LichKham.tao_luc.desc()).all()
+    items = db.query(LichKham).filter((LichKham.bac_si_id == user.id) | (LichKham.bac_si_id.is_(None))).order_by(LichKham.tao_luc.desc()).all()
     ket_qua = []
     for l in items:
         bn = db.query(User).filter(User.id == l.benh_nhan_id).first()
+        bs = db.query(User).filter(User.id == l.bac_si_id).first() if l.bac_si_id else None
         ket_qua.append(LichKhamOut(
             id=l.id,
             benh_nhan_id=l.benh_nhan_id,
+            bac_si_id=l.bac_si_id,
             benh_nhan_ho_ten=bn.ho_ten if bn else None,
+            bac_si_ho_ten=bs.ho_ten if bs else None,
             thoi_gian=l.thoi_gian,
             ly_do=l.ly_do,
             trang_thai=l.trang_thai,

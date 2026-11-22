@@ -37,9 +37,11 @@ class LichKham(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     benh_nhan_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    bac_si_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     thoi_gian = Column(String(255), nullable=False)
     ly_do = Column(Text, nullable=True)
     trang_thai = Column(String(20), default="cho_xac_nhan")
     tao_luc = Column(DateTime, default=datetime.utcnow)
 
-    benh_nhan = relationship("User")
+    benh_nhan = relationship("User", foreign_keys=[benh_nhan_id])
+    bac_si = relationship("User", foreign_keys=[bac_si_id])

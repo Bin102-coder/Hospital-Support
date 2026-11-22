@@ -117,7 +117,9 @@ class TrangThaiUpdate(BaseModel):
 class LichKhamOut(BaseModel):
     id: int
     benh_nhan_id: int
+    bac_si_id: Optional[int] = None
     benh_nhan_ho_ten: Optional[str] = None
+    bac_si_ho_ten: Optional[str] = None
     thoi_gian: str
     ly_do: Optional[str] = None
     trang_thai: str
@@ -125,6 +127,7 @@ class LichKhamOut(BaseModel):
 
 
 class DatLichRequest(BaseModel):
+    bac_si_id: int
     thoi_gian: str
     ly_do: Optional[str] = ""
 
@@ -139,6 +142,7 @@ class ChatResponse(BaseModel):
     action: Literal["none", "schedule"] = "none"
     schedule_thoi_gian: Optional[str] = None
     schedule_ly_do: Optional[str] = None
+    schedule_bac_si_ten: Optional[str] = None
     appointment_id: Optional[int] = None
 
 

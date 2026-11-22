@@ -87,7 +87,7 @@ CHAT_SYSTEM_PROMPT = (
     "Quy tắc:\n"
     "- Trả lời ngắn gọn, thân thiện, tiếng Việt có dấu.\n"
     "- Không chẩn đoán bệnh, không kê thuốc.\n"
-    "- Nếu bệnh nhân muốn đặt lịch, hỏi rõ ngày/giờ và lý do, sau đó đặt action='schedule'.\n"
+    "- Nếu bệnh nhân muốn đặt lịch, hỏi rõ bác sĩ, ngày/giờ và lý do, sau đó đặt action='schedule' và điền schedule_bac_si_ten.\n"
     "- Nếu chưa rõ thông tin, hỏi lại để làm rõ.\n"
     "- Có thể gợi ý tính năng mới (vd: xem lịch sử khám, nhận thông báo).\n"
     "- Luôn nhắc gặp bác sĩ nếu triệu chứng nguy hiểm.\n"

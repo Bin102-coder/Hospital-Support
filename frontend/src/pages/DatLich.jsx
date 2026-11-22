@@ -4,7 +4,8 @@ import Layout from "../components/Layout";
 
 export default function DatLich() {
   const [danhSach, setDanhSach] = useState([]);
-  const [form, setForm] = useState({ thoi_gian: "", ly_do: "" });
+  const [doctors, setDoctors] = useState([]);
+  const [form, setForm] = useState({ bac_si_id: "", thoi_gian: "", ly_do: "" });
   const [loi, setLoi] = useState("");
 
   async function tai() {
@@ -14,17 +15,22 @@ export default function DatLich() {
     setDanhSach(await res.json());
   }
 
-  useEffect(() => { tai(); const t = setInterval(tai, 5000); return () => clearInterval(t); }, []);
+  async function taiBacSi() {
+    const res = await api("/api/benh-nhan/bac-si");
+    if (res.ok) setDoctors(await res.json());
+  }
+
+  useEffect(() => { tai(); taiBacSi(); const t = setInterval(tai, 5000); return () => clearInterval(t); }, []);
 
   async function submit(e) {
     e.preventDefault();
     setLoi("");
     const res = await api("/api/dat-lich", {
       method: "POST",
-      body: JSON.stringify({ thoi_gian: form.thoi_gian, ly_do: form.ly_do }),
+      body: JSON.stringify({ bac_si_id: Number(form.bac_si_id), thoi_gian: form.thoi_gian, ly_do: form.ly_do }),
     });
     if (!res.ok) { setLoi("Lỗi " + res.status); return; }
-    setForm({ thoi_gian: "", ly_do: "" });
+    setForm({ bac_si_id: "", thoi_gian: "", ly_do: "" });
     tai();
   }
 
@@ -33,6 +39,14 @@ export default function DatLich() {
       <div className="card">
         <h3>Đặt lịch mới</h3>
         <form onSubmit={submit}>
+          <div style={{ marginBottom: 8 }}>
+            <select className="input" value={form.bac_si_id} onChange={(e) => setForm({ ...form, bac_si_id: e.target.value })} required>
+              <option value="">Chọn bác sĩ</option>
+              {doctors.map((d) => (
+                <option key={d.id} value={d.id}>{d.ho_ten}</option>
+              ))}
+            </select>
+          </div>
           <div style={{ marginBottom: 8 }}>
             <input className="input" type="datetime-local" value={form.thoi_gian}
               onChange={(e) => setForm({ ...form, thoi_gian: e.target.value })} required />
@@ -53,6 +67,7 @@ export default function DatLich() {
           <table className="table">
             <thead>
               <tr>
+                <th>Bác sĩ</th>
                 <th>Thời gian</th>
                 <th>Lý do</th>
                 <th>Trạng thái</th>
@@ -61,6 +76,7 @@ export default function DatLich() {
             <tbody>
               {danhSach.map((l) => (
                 <tr key={l.id}>
+                  <td>{l.bac_si_ho_ten || "—"}</td>
                   <td>{l.thoi_gian}</td>
                   <td>{l.ly_do || "—"}</td>
                   <td>
