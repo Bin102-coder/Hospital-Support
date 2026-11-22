@@ -91,6 +91,17 @@ body {
   color: white; border: none;
 }
 .card-hero h1, .card-hero h2, .card-hero h3, .card-hero p, .card-hero .muted { color: white; }
+.hero {
+  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #5eead4 100%);
+  color: white; border: none; padding: 28px;
+}
+.hero h1, .hero h2, .hero h3, .hero p { color: white; }
+.stat-card { text-align: center; padding: 18px; }
+.stat-number { font-size: 32px; font-weight: 700; color: var(--accent); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+.action-card { display: block; text-decoration: none; color: inherit; }
+.action-card:hover { transform: translateY(-3px); }
 h1 { font-size: 26px; margin: 0 0 8px; color: var(--accent); }
 h2 { font-size: 20px; margin: 0 0 12px; }
 h3 { font-size: 16px; margin: 16px 0 8px; color: var(--accent); }

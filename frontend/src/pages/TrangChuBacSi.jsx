@@ -17,20 +17,32 @@ export default function TrangChuBacSi() {
   }, []);
 
   return (
-    <Layout title="Trang chủ bác sĩ">
-      <div className="card">
-        <h3>Tổng quan</h3>
-        <div className="row">
-          <div className="chip">Hồ sơ mới: {soMoi}</div>
-          <div className="chip">Lịch chờ xác nhận: {soLich}</div>
+    <Layout title="Trang chủ">
+      <div className="hero card">
+        <h1>Xin chào, bác sĩ</h1>
+        <p>Quản lý hồ sơ bệnh nhân và lịch khám trong một nơi.</p>
+      </div>
+      <div className="grid-2" style={{ marginTop: 16 }}>
+        <div className="card stat-card">
+          <div className="stat-number">{soMoi}</div>
+          <p className="muted">Hồ sơ mới chờ xem</p>
+        </div>
+        <div className="card stat-card">
+          <div className="stat-number">{soLich}</div>
+          <p className="muted">Lịch chờ xác nhận</p>
         </div>
       </div>
-      <div className="card">
-        <h3>Chức năng</h3>
-        <div className="row" style={{ marginTop: 12 }}>
-          <Link to="/bac-si/ho-so" className="btn btn-primary">Hồ sơ bệnh nhân</Link>
-          <Link to="/bac-si/lich-kham" className="btn btn-ghost">Lịch khám</Link>
-        </div>
+      <div className="grid-2" style={{ marginTop: 16 }}>
+        <Link to="/bac-si/ho-so" className="card action-card">
+          <h3>Hồ sơ bệnh nhân</h3>
+          <p className="muted">Xem, lọc, đánh dấu đã xem, thêm/sửa/xóa hồ sơ.</p>
+          <span className="btn btn-primary" style={{ marginTop: 8, display: "inline-block" }}>Mở danh sách</span>
+        </Link>
+        <Link to="/bac-si/lich-kham" className="card action-card">
+          <h3>Lịch khám</h3>
+          <p className="muted">Xác nhận hoặc hủy lịch bệnh nhân đặt.</p>
+          <span className="btn btn-ghost" style={{ marginTop: 8, display: "inline-block" }}>Xem lịch</span>
+        </Link>
       </div>
     </Layout>
   );
