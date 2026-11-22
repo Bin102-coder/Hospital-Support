@@ -114,6 +114,16 @@ class TrangThaiUpdate(BaseModel):
     trang_thai: Literal["moi", "da_xem"]
 
 
+class LichKhamOut(BaseModel):
+    id: int
+    benh_nhan_id: int
+    benh_nhan_ho_ten: Optional[str] = None
+    thoi_gian: str
+    ly_do: Optional[str] = None
+    trang_thai: str
+    tao_luc: datetime
+
+
 class ChatRequest(BaseModel):
     message: str
     history: list[dict] = []

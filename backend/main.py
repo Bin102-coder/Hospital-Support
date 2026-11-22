@@ -13,7 +13,7 @@ if os.path.exists(env_path):
 
 from database import Base, engine
 import models
-from routers import tom_tat, auth, bac_si, chat
+from routers import tom_tat, auth, bac_si, chat, lich_kham
 from seed import seed_du_lieu
 
 Base.metadata.create_all(bind=engine)
@@ -32,6 +32,7 @@ app.include_router(tom_tat.router)
 app.include_router(auth.router)
 app.include_router(bac_si.router)
 app.include_router(chat.router)
+app.include_router(lich_kham.router)
 
 
 if __name__ == "__main__":

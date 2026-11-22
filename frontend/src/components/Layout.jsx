@@ -26,10 +26,16 @@ export default function Layout({ children, title }) {
         </div>
         <nav className="sidebar-nav">
           {user?.vai_tro === "bac_si" && (
-            <Link to="/bac-si" className="side-link">Hồ sơ bệnh nhân</Link>
+            <>
+              <Link to="/bac-si" className="side-link">Hồ sơ bệnh nhân</Link>
+              <Link to="/bac-si/lich-kham" className="side-link">Lịch khám</Link>
+            </>
           )}
           {user?.vai_tro === "benh_nhan" && (
-            <Link to="/" className="side-link">Khai báo triệu chứng</Link>
+            <>
+              <Link to="/" className="side-link">Khai báo triệu chứng</Link>
+              <Link to="/dat-lich" className="side-link">Đặt lịch khám</Link>
+            </>
           )}
         </nav>
         <div className="sidebar-footer">

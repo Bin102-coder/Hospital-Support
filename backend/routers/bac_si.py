@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from auth import require_role
 from ai import goi_y_tu_ai
 from database import get_db
-from models import HoSoKham, User
-from schemas import HoSoCapNhat, HoSoChiTiet, HoSoTaoMoi, HoSoTomTat, TrangThaiUpdate, UserOut, YeuCau, TU_KHOA_KHAN_CAP
+from models import HoSoKham, LichKham, User
+from schemas import HoSoCapNhat, HoSoChiTiet, HoSoTaoMoi, HoSoTomTat, LichKhamOut, TrangThaiUpdate, UserOut, YeuCau, TU_KHOA_KHAN_CAP
 
 router = APIRouter()
 
@@ -182,4 +182,41 @@ def xoa_ho_so(
         raise HTTPException(status_code=404, detail="Không tìm thấy hồ sơ")
     db.delete(h)
     db.commit()
+    return {"ok": True}
+
+
+@router.get("/api/bac-si/lich-kham", response_model=list[LichKhamOut])
+def danh_sach_lich_kham(
+    user: User = Depends(require_role("bac_si")),
+    db: Session = Depends(get_db),
+):
+    items = db.query(LichKham).order_by(LichKham.tao_luc.desc()).all()
+    ket_qua = []
+    for l in items:
+        bn = db.query(User).filter(User.id == l.benh_nhan_id).first()
+        ket_qua.append(LichKhamOut(
+            id=l.id,
+            benh_nhan_id=l.benh_nhan_id,
+            benh_nhan_ho_ten=bn.ho_ten if bn else None,
+            thoi_gian=l.thoi_gian,
+            ly_do=l.ly_do,
+            trang_thai=l.trang_thai,
+            tao_luc=l.tao_luc,
+        ))
+    return ket_qua
+
+
+@router.patch("/api/bac-si/lich-kham/{lich_id}")
+def cap_nhat_lich_kham(
+    lich_id: int,
+    trang_thai: str,
+    user: User = Depends(require_role("bac_si")),
+    db: Session = Depends(get_db),
+):
+    l = db.query(LichKham).filter(LichKham.id == lich_id).first()
+    if not l:
+        raise HTTPException(status_code=404, detail="Không tìm thấy lịch khám")
+    if trang_thai in ("cho_xac_nhan", "da_xac_nhan", "huy"):
+        l.trang_thai = trang_thai
+        db.commit()
     return {"ok": True}
