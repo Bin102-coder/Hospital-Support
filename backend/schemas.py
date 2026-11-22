@@ -124,6 +124,11 @@ class LichKhamOut(BaseModel):
     tao_luc: datetime
 
 
+class DatLichRequest(BaseModel):
+    thoi_gian: str
+    ly_do: Optional[str] = ""
+
+
 class ChatRequest(BaseModel):
     message: str
     history: list[dict] = []

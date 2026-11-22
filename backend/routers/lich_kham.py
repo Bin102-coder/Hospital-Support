@@ -4,22 +4,21 @@ from sqlalchemy.orm import Session
 from auth import get_current_user, require_role
 from database import get_db
 from models import LichKham, User
-from schemas import LichKhamOut
+from schemas import DatLichRequest, LichKhamOut
 
 router = APIRouter()
 
 
 @router.post("/api/dat-lich", response_model=LichKhamOut)
 def dat_lich(
-    thoi_gian: str,
-    ly_do: str = "",
+    data: DatLichRequest,
     user: User = Depends(require_role("benh_nhan")),
     db: Session = Depends(get_db),
 ):
     lich = LichKham(
         benh_nhan_id=user.id,
-        thoi_gian=thoi_gian,
-        ly_do=ly_do,
+        thoi_gian=data.thoi_gian,
+        ly_do=data.ly_do,
         trang_thai="cho_xac_nhan",
     )
     db.add(lich)
