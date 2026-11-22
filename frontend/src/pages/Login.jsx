@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api, setToken, decodeToken } from "../api";
+import MedicalSlideshow from "../components/MedicalSlideshow";
 
 export default function Login() {
   const [mode, setMode] = useState("login");
@@ -39,7 +40,7 @@ export default function Login() {
 
   return (
     <div className="login-shell">
-      <div className="login-left">
+      <div className="login-left" style={{ maxWidth: 560 }}>
         <div className="brand-row">
           <div className="brand-mark">H</div>
           <div>
@@ -90,7 +91,9 @@ export default function Login() {
         </div>
       </div>
       <div className="login-right">
-        <img src="/slideshow/Bac-Si-Bach-Mai.jpeg" alt="Bệnh viện" style={{ width: "100%", maxWidth: 260, borderRadius: 12, boxShadow: "var(--shadow)" }} />
+        <div style={{ width: "100%", maxWidth: 360 }}>
+          <MedicalSlideshow />
+        </div>
         <div className="login-right-text">
           <h2>Chăm sóc sức khỏe thông minh</h2>
           <p className="muted">Thu thập và tổng hợp triệu chứng trước khám cho bệnh nhân.</p>
